@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rive_animation/screens/onboding/onboding_screen.dart';
+import 'package:rive_animation/screens/onboarding/onboarding_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: "Intel",
-        inputDecorationTheme: InputDecorationTheme(
+        inputDecorationTheme: const InputDecorationTheme(
           filled: true,
           fillColor: Colors.white,
           errorStyle: TextStyle(height: 0),
