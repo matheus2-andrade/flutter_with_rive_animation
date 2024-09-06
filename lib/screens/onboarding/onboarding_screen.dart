@@ -1,6 +1,8 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:rive/rive.dart';
 
 import 'components/animated_btn.dart';
@@ -68,7 +70,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ),
                         SizedBox(height: 16),
                         Text(
-                          "Não pule o design. Aprenda design e programação construindo aplicativos reais com Flutter e Swift. Cursos completos sobre as melhores ferramentas.",
+                          "Não pule o design. Aprenda design e programação construindo aplicativos reais com Flutter. Cursos completos sobre as melhores ferramentas.",
                         )
                       ],
                     ),
@@ -78,14 +80,143 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     btnAnimationController: _btnAnimationController,
                     onPress: () {
                       _btnAnimationController.isActive = true;
+                      showGeneralDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        barrierLabel: "Sign in",
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            Center(
+                          child: Container(
+                            height: 620,
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 32,
+                              horizontal: 24,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.94),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(40),
+                              ),
+                            ),
+                            child: const Scaffold(
+                              backgroundColor: Colors.transparent,
+                              body: Column(
+                                children: [
+                                  Text(
+                                    "Entrar",
+                                    style: TextStyle(
+                                      fontSize: 34,
+                                      fontFamily: "Poppins",
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 16,
+                                    ),
+                                    child: Text(
+                                      "Acesso a mais de 240 horas de conteúdo. Aprenda design e programação construindo aplicativos reais com Flutter.",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  SignInForm()
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
                     },
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 24),
                     child: Text(
-                        "A compra inclui acesso a mais de 30 cursos, 240+ tutoriais premium, 120+ horas de vídeos, códigos-fonte e certificados."),
+                      "A compra inclui acesso a mais de 30 cursos, 240+ tutoriais premium, 120+ horas de vídeos, códigos-fonte e certificados.",
+                    ),
                   )
                 ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class SignInForm extends StatelessWidget {
+  const SignInForm({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Email",
+            style: TextStyle(
+              color: Colors.black54,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 8,
+              bottom: 16,
+            ),
+            child: TextFormField(
+              decoration: InputDecoration(
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                  ),
+                  child: SvgPicture.asset("assets/icons/email.svg"),
+                ),
+              ),
+            ),
+          ),
+          const Text(
+            "Senha",
+            style: TextStyle(
+              color: Colors.black54,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 8,
+              bottom: 16,
+            ),
+            child: TextFormField(
+              obscureText: true,
+              decoration: InputDecoration(
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                  ),
+                  child: SvgPicture.asset("assets/icons/password.svg"),
+                ),
+              ),
+            ),
+          ),
+          ElevatedButton.icon(
+            onPressed: () {},
+            icon: const Icon(CupertinoIcons.arrow_right),
+            label: const Text("Entrar"),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFF77D8E),
+              minimumSize: const Size(
+                double.infinity,
+                56,
+              ),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
+                  bottomLeft: Radius.circular(25),
+                ),
               ),
             ),
           )
