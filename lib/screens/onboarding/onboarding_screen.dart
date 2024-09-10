@@ -1,11 +1,11 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rive/rive.dart';
 
 import 'components/animated_btn.dart';
+import 'components/sign_in_form.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -78,54 +78,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   const Spacer(flex: 2),
                   AnimatedBtn(
                     btnAnimationController: _btnAnimationController,
-                    onPress: () {
+                    onPress: () async {
                       _btnAnimationController.isActive = true;
-                      showGeneralDialog(
-                        context: context,
-                        barrierDismissible: true,
-                        barrierLabel: "Sign in",
-                        pageBuilder: (context, animation, secondaryAnimation) =>
-                            Center(
-                          child: Container(
-                            height: 620,
-                            margin: const EdgeInsets.symmetric(horizontal: 16),
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 32,
-                              horizontal: 24,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.94),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(40),
-                              ),
-                            ),
-                            child: const Scaffold(
-                              backgroundColor: Colors.transparent,
-                              body: Column(
-                                children: [
-                                  Text(
-                                    "Entrar",
-                                    style: TextStyle(
-                                      fontSize: 34,
-                                      fontFamily: "Poppins",
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 16,
-                                    ),
-                                    child: Text(
-                                      "Acesso a mais de 240 horas de conteúdo. Aprenda design e programação construindo aplicativos reais com Flutter.",
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  SignInForm()
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
+                      Future.delayed(
+                          const Duration(
+                            milliseconds: 800,
+                          ), () {
+                        signInDialog(context);
+                      });
                     },
                   ),
                   const Padding(
@@ -142,85 +102,147 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
     );
   }
-}
 
-class SignInForm extends StatelessWidget {
-  const SignInForm({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Email",
-            style: TextStyle(
-              color: Colors.black54,
+  Future<Object?> signInDialog(BuildContext context) {
+    return showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: "Sign in",
+      transitionDuration: const Duration(milliseconds: 400),
+      transitionBuilder: (_, animation, __, child) {
+        Tween<Offset> tween;
+        tween = Tween(begin: const Offset(0, -1), end: Offset.zero);
+        return SlideTransition(
+          position: tween.animate(
+            CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeInOut,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 8,
-              bottom: 16,
+          child: child,
+        );
+      },
+      pageBuilder: (context, animation, secondaryAnimation) => Center(
+        child: Container(
+          height: 640,
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(
+            vertical: 32,
+            horizontal: 24,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.94),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(40),
             ),
-            child: TextFormField(
-              decoration: InputDecoration(
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
+          ),
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Column(
+                  children: [
+                    const Text(
+                      "Entrar",
+                      style: TextStyle(
+                        fontSize: 34,
+                        fontFamily: "Poppins",
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 16,
+                      ),
+                      child: Text(
+                        "Acesso a mais de 240 horas de conteúdo. Aprenda design e programação construindo aplicativos reais com Flutter.",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SignInForm(),
+                    const Row(
+                      children: [
+                        Expanded(
+                          child: Divider(),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                          ),
+                          child: Text(
+                            "OU",
+                            style: TextStyle(
+                              color: Colors.black26,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(),
+                        ),
+                      ],
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 24,
+                      ),
+                      child: Text(
+                        "Cadastre-se com Email, Apple ou Google",
+                        style: TextStyle(
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {},
+                          icon: SvgPicture.asset(
+                            "assets/icons/email_box.svg",
+                            height: 42,
+                            width: 42,
+                          ),
+                        ),
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {},
+                          icon: SvgPicture.asset(
+                            "assets/icons/apple_box.svg",
+                            height: 42,
+                            width: 42,
+                          ),
+                        ),
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {},
+                          icon: SvgPicture.asset(
+                            "assets/icons/google_box.svg",
+                            height: 42,
+                            width: 42,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                const Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: -48,
+                  child: CircleAvatar(
+                    radius: 16,
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.close,
+                      color: Colors.black,
+                    ),
                   ),
-                  child: SvgPicture.asset("assets/icons/email.svg"),
-                ),
-              ),
+                )
+              ],
             ),
           ),
-          const Text(
-            "Senha",
-            style: TextStyle(
-              color: Colors.black54,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 8,
-              bottom: 16,
-            ),
-            child: TextFormField(
-              obscureText: true,
-              decoration: InputDecoration(
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                  ),
-                  child: SvgPicture.asset("assets/icons/password.svg"),
-                ),
-              ),
-            ),
-          ),
-          ElevatedButton.icon(
-            onPressed: () {},
-            icon: const Icon(CupertinoIcons.arrow_right),
-            label: const Text("Entrar"),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFF77D8E),
-              minimumSize: const Size(
-                double.infinity,
-                56,
-              ),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(25),
-                  bottomRight: Radius.circular(25),
-                  bottomLeft: Radius.circular(25),
-                ),
-              ),
-            ),
-          )
-        ],
+        ),
       ),
     );
   }
